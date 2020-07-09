@@ -2,7 +2,16 @@ export default [
     {
         _tag: 'CSidebarNavItem',
         name: 'Books',
-        to: '/books',
+        to: '/bookList',
+        icon: 'cil-speedometer',
+        badge: {
+            color: 'info',
+            text: 'NEW',
+        }
+    },{
+        _tag: 'CSidebarNavItem',
+        name: 'Book Create',
+        to: '/bookCreate',
         icon: 'cil-speedometer',
         badge: {
             color: 'info',

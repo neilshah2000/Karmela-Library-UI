@@ -37,11 +37,13 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const Books = React.lazy(() => import('./views/books/Books'));
+const BookList = React.lazy(() => import('./views/books/BookList'));
+const BookCreate = React.lazy(() => import('./views/books/BookCreate'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/books', name: 'Books', component: Books },
+  { path: '/bookList', name: 'BookList', component: BookList },
+  { path: '/bookCreate', name: 'BookCreate', component: BookCreate },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

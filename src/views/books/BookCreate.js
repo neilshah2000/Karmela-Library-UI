@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Select from 'react-select';
+import AuthorList from './AuthorList';
 import {
     CFormGroup,
     CLabel,
@@ -13,7 +15,7 @@ import {
     CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { createBook } from '../../services/book.service';
+import { createBook, getAuthors } from '../../services/book.service';
 
 const BookCreate = () => {
     const emptyBook = {
@@ -31,6 +33,24 @@ const BookCreate = () => {
         abstract: ''
     }
     const [bookFields, setBookFields] = useState(emptyBook);
+    const [authors, setAuthors] = useState([]);
+    const [selectedAuthors, setSelectedAuthors] = useState([]);
+
+    useEffect(() => {
+        (async function fetchData() {
+            const result = await getAuthors()
+            setAuthors(result.map((author) => { // add the fields needed for the select component
+                author.value = author.id;
+                author.key = author.id;
+                author.label = author.first_name = ' ' + author.last_name;
+                return author;
+            }));
+        })();
+    }, []);
+
+    function onAuthorSelectChange(newSelected) {
+        setSelectedAuthors([...selectedAuthors, newSelected]);
+    }
 
     function onFormInputChange(e) {
         const field = e.target.id;
@@ -61,6 +81,14 @@ const BookCreate = () => {
                     </CCardHeader>
 
                     <CCardBody>
+                        <CFormGroup>
+                            <CLabel htmlFor="title">Authors</CLabel>
+                            <Select
+                                components={{ MenuList: AuthorList }}
+                                onChange={onAuthorSelectChange}
+                                options={authors}
+                                isMulti={true}/>
+                        </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="title">Title</CLabel>
                             <CInput id="title" placeholder="Book title" onChange={onFormInputChange} value={bookFields.title}/>

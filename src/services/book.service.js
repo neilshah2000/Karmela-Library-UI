@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 function getBooks(params) {
     let endpoint = '/catalog/api/books/';
     endpoint = buildParams(endpoint, params);
@@ -11,10 +13,17 @@ function createBook(book) {
         method: 'POST',
         body: JSON.stringify(book),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFTOKEN': Cookies.get('csrftoken')
         }
     }
     return fetch(endpoint, request)
+        .then(response => {return response.json()})
+}
+
+function getAuthors() {
+    let endpoint = '/catalog/api/authors/';
+    return fetch(endpoint)
         .then(response => {return response.json()})
 }
 
@@ -31,5 +40,6 @@ function buildParams(endpoint, params) {
 
 export {
     getBooks,
-    createBook
+    createBook,
+    getAuthors
 }

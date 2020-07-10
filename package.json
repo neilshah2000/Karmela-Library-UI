@@ -10,8 +10,8 @@
     },
     "contributors": [
         {
-        "name": "CoreUI Team",
-        "url": "https://github.com/orgs/coreui/people"
+            "name": "CoreUI Team",
+            "url": "https://github.com/orgs/coreui/people"
         }
     ],
     "homepage": ".",
@@ -34,6 +34,7 @@
         "core-js": "^3.6.5",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.2",
+        "js-cookie": "^2.2.1",
         "node-sass": "^4.14.1",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
@@ -41,6 +42,8 @@
         "react-dom": "^16.13.1",
         "react-redux": "7.2.0",
         "react-router-dom": "^5.2.0",
+        "react-select": "^3.1.0",
+        "react-window": "^1.8.5",
         "redux": "4.0.5"
     },
     "devDependencies": {
@@ -68,10 +71,10 @@
     ],
     "jest": {
         "collectCoverageFrom": [
-        "src/**/*.{js,jsx}",
-        "!**/*index.js",
-        "!src/serviceWorker.js",
-        "!src/polyfill.js"
+            "src/**/*.{js,jsx}",
+            "!**/*index.js",
+            "!src/serviceWorker.js",
+            "!src/polyfill.js"
         ]
     },
     "engines": {

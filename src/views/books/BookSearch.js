@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import {
     CCard,
     CCardBody,
@@ -18,7 +19,7 @@ import { getBooks } from '../../services/book.service';
 const fields = ['title','zoteroId', 'authorNames']
 
 
-const BookList = () => {
+const BookSearch = () => {
     const [data, setData] = useState({ books: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
@@ -44,19 +45,9 @@ const BookList = () => {
     }, [currentPage, searchTerm]);
 
     function makePretty(book) {
-        let authorNames = '';
-        book.author.forEach((auth) => {
-            let name = '';
-            if (auth.first_name) {
-                name = name + auth.first_name + ' ';
-            }
-            if (auth.last_name) {
-                name = name + auth.last_name;
-            }
-            authorNames = authorNames + name + ', '
-        });
+        const authorNames = book.author_names.join(', ');
         book.authorNames = authorNames;
-        return book
+        return book;
     }
 
     function searchButtonClicked() {
@@ -86,6 +77,9 @@ const BookList = () => {
                     <CDataTable
                         items={data.books}
                         fields={fields}
+                        scopedSlots = {{title: (book) => (
+                            <td><Link to={`/bookEdit/${book.id}`}>{book.title}</Link></td>
+                        )}}
                         hover
                         striped
                         bordered
@@ -104,4 +98,4 @@ const BookList = () => {
     )
 }
 
-export default BookList
+export default BookSearch

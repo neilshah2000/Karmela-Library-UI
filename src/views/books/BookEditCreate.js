@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import Select from 'react-select';
 import AuthorList from './AuthorList';
 import {
@@ -15,9 +16,10 @@ import {
     CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { createBook, getAuthors } from '../../services/book.service';
+import { createBook, updateBook, getAuthors, getBook } from '../../services/book.service';
 
-const BookCreate = () => {
+const BookEditCreate = (props) => {
+    const params = useParams();
     const emptyBook = {
         title: '',
         titleShort: '',
@@ -37,19 +39,24 @@ const BookCreate = () => {
     const [selectedAuthors, setSelectedAuthors] = useState([]);
 
     useEffect(() => {
-        (async function fetchData() {
-            const result = await getAuthors()
-            setAuthors(result.map((author) => { // add the fields needed for the select component
-                author.value = author.id;
-                author.key = author.id;
-                author.label = author.first_name = ' ' + author.last_name;
-                return author;
-            }));
+        (async function getData(){
+            if (params.id) {
+                let [authorData, bookData] = await Promise.all([getAuthors(), getBook(params.id)]);
+                setBookFields(bookData);
+                setAuthors(authorData);
+                const originalSelectedAuthors = authorData.filter((myAuth) => {
+                    return bookData.author.includes(myAuth.id);
+                })
+                setSelectedAuthors(originalSelectedAuthors);
+            } else {
+                const authorData = await getAuthors();
+                setAuthors(authorData);
+            }
         })();
-    }, []);
+    }, [params]);
 
     function onAuthorSelectChange(newSelected) {
-        setSelectedAuthors([...selectedAuthors, newSelected]);
+        setSelectedAuthors(newSelected);
     }
 
     function onFormInputChange(e) {
@@ -61,9 +68,18 @@ const BookCreate = () => {
     }
 
     function bookSubmitClicked() {
-        createBook(bookFields).then((res) => {
-            console.log(res);
-        })
+        bookFields.author = selectedAuthors.map((auth) => {
+            return auth.key;
+        });
+        if(params.id) {
+            updateBook(bookFields).then((res) => {
+                console.log(res);
+            });
+        } else {
+            createBook(bookFields).then((res) => {
+                console.log(res);
+            })
+        }
     }
 
     function test() {
@@ -74,7 +90,7 @@ const BookCreate = () => {
         
         <>
         <CRow>
-            <CCol xs="12" sm="6">
+            <CCol>
                 <CCard>
                     <CCardHeader>
                     Create Book
@@ -86,52 +102,53 @@ const BookCreate = () => {
                             <Select
                                 components={{ MenuList: AuthorList }}
                                 onChange={onAuthorSelectChange}
+                                value={selectedAuthors}
                                 options={authors}
                                 isMulti={true}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="title">Title</CLabel>
-                            <CInput id="title" placeholder="Book title" onChange={onFormInputChange} value={bookFields.title}/>
+                            <CInput id="title" placeholder="Book title" onChange={onFormInputChange} value={bookFields.title || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="titleShort">Short Title</CLabel>
-                            <CInput id="titleShort" placeholder="Short title" onChange={onFormInputChange}/>
+                            <CInput id="titleShort" placeholder="Short title" onChange={onFormInputChange} value={bookFields.titleShort || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="isbn">ISBN</CLabel>
-                            <CInput id="isbn" placeholder="978-1-86197-876-9" onChange={onFormInputChange}/>
+                            <CInput id="isbn" placeholder="978-1-86197-876-9" onChange={onFormInputChange} value={bookFields.isbn || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="callNumber">Call Number</CLabel>
-                            <CInput id="callNumber" placeholder="" onChange={onFormInputChange}/>
+                            <CInput id="callNumber" placeholder="" onChange={onFormInputChange} value={bookFields.callNumber || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="language">Language</CLabel>
-                            <CInput id="language" placeholder="es" onChange={onFormInputChange}/>
+                            <CInput id="language" placeholder="es" onChange={onFormInputChange} value={bookFields.language || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="pages">Pages</CLabel>
-                            <CInput id="pages" placeholder="" onChange={onFormInputChange}/>
+                            <CInput id="pages" placeholder="" onChange={onFormInputChange} value={bookFields.pages || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="publisher">Publisher</CLabel>
-                            <CInput id="publisher" placeholder="" onChange={onFormInputChange} />
+                            <CInput id="publisher" placeholder="" onChange={onFormInputChange} value={bookFields.publisher || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="publisherPlace">Publisher Place</CLabel>
-                            <CInput id="publisherPlace" placeholder="" onChange={onFormInputChange} />
+                            <CInput id="publisherPlace" placeholder="" onChange={onFormInputChange} value={bookFields.publisherPlace || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="issued">Issued</CLabel>
-                            <CInput id="issued" placeholder="" onChange={onFormInputChange}/>
+                            <CInput id="issued" placeholder="" onChange={onFormInputChange} value={bookFields.issued || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="collectionTitle">Collection Title</CLabel>
-                            <CInput id="collectionTitle" placeholder="" onChange={onFormInputChange}/>
+                            <CInput id="collectionTitle" placeholder="" onChange={onFormInputChange} value={bookFields.collectionTitle || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="place">Place</CLabel>
-                            <CInput id="place" placeholder="" onChange={onFormInputChange}/>
+                            <CInput id="place" placeholder="" onChange={onFormInputChange} value={bookFields.place || ''}/>
                         </CFormGroup>
                         <CFormGroup>
                             <CLabel htmlFor="abstract">Abstract</CLabel>
@@ -139,7 +156,7 @@ const BookCreate = () => {
                                 name="abstract" 
                                 id="abstract" 
                                 rows="10"
-                                placeholder="Content..." onChange={onFormInputChange}/>
+                                placeholder="Content..." onChange={onFormInputChange} value={bookFields.abstract || ''}/>
                         </CFormGroup>
                     </CCardBody>
 
@@ -155,13 +172,10 @@ const BookCreate = () => {
                     </CCardFooter>
                 </CCard>
             </CCol>
-            <CCol xs="12" sm="6">
-                {JSON.stringify(bookFields)}
-            </CCol>
         </CRow>
         
         </>
     )
 }
 
-export default BookCreate
+export default BookEditCreate

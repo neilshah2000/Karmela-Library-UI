@@ -55,7 +55,7 @@ function getAuthors() {
 
 
 function buildParams(endpoint, params) {
-    const url = 'http://' + window.location.host + endpoint;
+    const url = 'https://' + window.location.host + endpoint;
     console.log(url);
     let builtUrl = new URL(url);
     Object.keys(params).forEach((key) => {

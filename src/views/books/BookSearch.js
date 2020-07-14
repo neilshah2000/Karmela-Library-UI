@@ -14,44 +14,30 @@ import {
     CButton
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { getBooks } from '../../services/book.service';
+import { useBookFetch } from './../../services/useBookFetch';
 
 const fields = ['title','zoteroId', 'authorNames']
 
 
 const BookSearch = () => {
-    const [data, setData] = useState({ books: [] });
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageCount, setPageCount] = useState(1);
     const [searchTerm, setSearchTerm] = useState(''); // search term that goes to back end
     const [inputText, setInputText] = useState(''); // text in the search input
-    const [resultCount, setResultCount] = useState(0);
-    const rowsPerPage = 20;
+    const [shelf, setShelf] = useState(null);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
 
-    useEffect(() => {
-        (async function fetchData() {
-            const params = {
-                search: searchTerm,
-                limit: rowsPerPage,
-                offset: (rowsPerPage * currentPage) - rowsPerPage
-            }
-            const result = await getBooks(params)
-            setData({
-                books: result.results.map(makePretty)
-            });
-            setResultCount(result.count)
-            setPageCount(Math.ceil(result.count / rowsPerPage))
-        })();
-    }, [currentPage, searchTerm]);
+    // API call to get books. Re-triggered when any of the arguments changes
+    const [books, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, shelf)
 
-    function makePretty(book) {
-        const authorNames = book.author_names.join(', ');
-        book.authorNames = authorNames;
-        return book;
-    }
 
     function searchButtonClicked() {
+        setShelf(null)
         setSearchTerm(inputText);
+    }
+
+    function onShelfUpdated(newShelf) {
+        setInputText('');
+        setShelf(4)
     }
 
     function onSearchTextChange(e) {
@@ -72,10 +58,10 @@ const BookSearch = () => {
                         <CInputGroupPrepend>
                             <CButton onClick={searchButtonClicked} type="button" color="primary"><CIcon name="cil-magnifying-glass" /> Search</CButton>
                         </CInputGroupPrepend>
-                        <CInput placeholder="Title or abstract" onChange={onSearchTextChange}/>
+                        <CInput placeholder="Title or abstract" onChange={onSearchTextChange} value={inputText}/>
                     </CInputGroup>
                     <CDataTable
-                        items={data.books}
+                        items={books}
                         fields={fields}
                         scopedSlots = {{title: (book) => (
                             <td><Link to={`/bookEdit/${book.id}`}>{book.title}</Link></td>
@@ -89,7 +75,8 @@ const BookSearch = () => {
                         activePage={currentPage}
                         pages={pageCount}
                         onActivePageChange={setCurrentPage} />
-                    <span>{resultCount + ' results'}</span>
+                    <span>{books.length + ' results'}</span>
+                    <CButton onClick={onShelfUpdated} type="button" color="primary">Shelf</CButton>
                 </CCardBody>
             </CCard>
             </CCol>

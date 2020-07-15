@@ -11,10 +11,15 @@ import {
     CInput,
     CInputGroup,
     CInputGroupPrepend,
-    CButton
+    CButton,
+    CFormGroup,
+    CLabel,
+    CSelect,
+    CForm
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useBookFetch } from './../../services/useBookFetch';
+import { getShelves } from './../../services/book.service'
 
 const fields = ['title','zoteroId', 'authorNames']
 
@@ -23,21 +28,30 @@ const BookSearch = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState(''); // search term that goes to back end
     const [inputText, setInputText] = useState(''); // text in the search input
-    const [shelf, setShelf] = useState(null);
+    const [shelves, setShelves] = useState([]);
+    const [selectedShelf, setSelectedShelf] = useState(null);
     const [rowsPerPage, setRowsPerPage] = useState(20);
 
     // API call to get books. Re-triggered when any of the arguments changes
-    const [books, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, shelf)
+    const [books, totalResults, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, selectedShelf)
+
+    useEffect(() => {
+        (async function fetchShelves(){
+            getShelves().then((data) => {
+                setShelves(data);
+            });
+        })();
+    }, []);
 
 
     function searchButtonClicked() {
-        setShelf(null)
+        setSelectedShelf(false)
         setSearchTerm(inputText);
     }
 
-    function onShelfUpdated(newShelf) {
+    function onShelfSelected(e) {
         setInputText('');
-        setShelf(4)
+        setSelectedShelf(parseInt(e.target.value))
     }
 
     function onSearchTextChange(e) {
@@ -54,12 +68,34 @@ const BookSearch = () => {
                     Book Search
                 </CCardHeader>
                 <CCardBody>
-                    <CInputGroup className={'mb-4'}>
-                        <CInputGroupPrepend>
-                            <CButton onClick={searchButtonClicked} type="button" color="primary"><CIcon name="cil-magnifying-glass" /> Search</CButton>
-                        </CInputGroupPrepend>
-                        <CInput placeholder="Title or abstract" onChange={onSearchTextChange} value={inputText}/>
-                    </CInputGroup>
+                    <CRow>
+                        <CCol sm='4'>
+                            <CInputGroup className={'mb-4'}>
+                                <CInputGroupPrepend>
+                                    <CButton onClick={searchButtonClicked} type="button" color="primary"><CIcon name="cil-magnifying-glass" /> Search</CButton>
+                                </CInputGroupPrepend>
+                                <CInput placeholder="Title or abstract" onChange={onSearchTextChange} value={inputText}/>
+                            </CInputGroup>
+                        </CCol>
+                        <CCol sm='4'></CCol>
+                        <CCol sm='4'>
+                            <CFormGroup row>
+                                <CCol md="3">
+                                    <CLabel htmlFor="shelfSelect" class='pt-1'>Shelf</CLabel>
+                                </CCol>
+                                <CCol xs="12" md="9">
+                                    <CSelect custom name="shelfSelect" id="shelfSelect" onChange={onShelfSelected} value={selectedShelf}>
+                                        <option disabled selected value='false'> -- select an option -- </option>
+                                        {shelves.map((shelf) => {
+                                            return <option value={shelf.id}>{shelf.name}</option>
+                                        })}
+                                    </CSelect>
+                                </CCol>
+                            </CFormGroup>
+                        </CCol>
+                    </CRow>
+
+                    
                     <CDataTable
                         items={books}
                         fields={fields}
@@ -75,8 +111,7 @@ const BookSearch = () => {
                         activePage={currentPage}
                         pages={pageCount}
                         onActivePageChange={setCurrentPage} />
-                    <span>{books.length + ' results'}</span>
-                    <CButton onClick={onShelfUpdated} type="button" color="primary">Shelf</CButton>
+                    <span>{totalResults + ' results'}</span>
                 </CCardBody>
             </CCard>
             </CCol>

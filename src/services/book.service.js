@@ -53,6 +53,12 @@ function getAuthors() {
         }));
 }
 
+function getShelves() {
+    let endpoint = '/catalog/api/shelves/';
+    return fetch(endpoint)
+        .then(response => {return response.json()})
+}
+
 
 function buildParams(endpoint, params) {
     const url = window.location.origin + endpoint;
@@ -69,5 +75,6 @@ export {
     createBook,
     getAuthors,
     getBook,
-    updateBook
+    updateBook,
+    getShelves
 }

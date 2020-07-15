@@ -13,7 +13,7 @@ import {
   CImg
 } from '@coreui/react'
 
-import CIcon from '@coreui/icons-react'
+import logo from './../assets/karmela.png'
 
 // sidebar nav config
 import navigation from './_nav'
@@ -39,7 +39,7 @@ const TheSidebar = () => {
           height={35}
         /> */}
         <CImg
-            src={'karmela.png'}
+            src={logo}
             className="c-sidebar-brand-full logo"
             alt="admin@bootstrapmaster.com"/>
       </CSidebarBrand>

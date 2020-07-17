@@ -15,7 +15,10 @@ import {
     CFormGroup,
     CLabel,
     CSelect,
-    CForm
+    CForm,
+    CCardFooter,
+    CSwitch,
+    CBadge
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useBookFetch } from './../../services/useBookFetch';
@@ -95,8 +98,28 @@ const BookSearch = () => {
                         </CCol>
                     </CRow>
 
-                    
-                    <CDataTable
+                    <CRow>
+                        
+                        {books.map((book) => {
+                            return <CCol xs="12" sm="6" md="4">
+                                <CCard accentColor="primary">
+                                    <CCardHeader>
+                                        <h5>{book.title}</h5>
+                                    </CCardHeader>
+                                    <CCardBody>
+                                        {book.author_names}
+                                    </CCardBody>
+                                    <CCardFooter>
+                                        Copies: {book.copies.length}
+                                    </CCardFooter>
+                                </CCard>
+                            </CCol>
+                        })}
+
+                    </CRow>
+
+
+                    {/* <CDataTable
                         items={books}
                         fields={fields}
                         scopedSlots = {{title: (book) => (
@@ -106,7 +129,7 @@ const BookSearch = () => {
                         striped
                         bordered
                         size="sm"
-                        itemsPerPage={rowsPerPage} />
+                        itemsPerPage={rowsPerPage} /> */}
                     <CPagination
                         activePage={currentPage}
                         pages={pageCount}

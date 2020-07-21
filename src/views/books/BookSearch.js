@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
 import {
     CCard,
     CCardBody,
     CCardHeader,
     CCol,
     CRow,
-    CDataTable,
     CPagination,
     CInput,
     CInputGroup,
@@ -14,17 +12,12 @@ import {
     CButton,
     CFormGroup,
     CLabel,
-    CSelect,
-    CForm,
-    CCardFooter,
-    CSwitch,
-    CBadge
+    CSelect
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useBookFetch } from './../../services/useBookFetch';
 import { getShelves } from './../../services/book.service'
-
-const fields = ['title','zoteroId', 'authorNames']
+import BookCard from './BookCard';
 
 
 const BookSearch = () => {
@@ -102,34 +95,12 @@ const BookSearch = () => {
                         
                         {books.map((book) => {
                             return <CCol xs="12" sm="6" md="4">
-                                <CCard accentColor="primary">
-                                    <CCardHeader>
-                                        <h5>{book.title}</h5>
-                                    </CCardHeader>
-                                    <CCardBody>
-                                        {book.author_names}
-                                    </CCardBody>
-                                    <CCardFooter>
-                                        Copies: {book.copies.length}
-                                    </CCardFooter>
-                                </CCard>
+                                <BookCard book={book}></BookCard>
                             </CCol>
                         })}
 
                     </CRow>
 
-
-                    {/* <CDataTable
-                        items={books}
-                        fields={fields}
-                        scopedSlots = {{title: (book) => (
-                            <td><Link to={`/bookEdit/${book.id}`}>{book.title}</Link></td>
-                        )}}
-                        hover
-                        striped
-                        bordered
-                        size="sm"
-                        itemsPerPage={rowsPerPage} /> */}
                     <CPagination
                         activePage={currentPage}
                         pages={pageCount}

@@ -4,17 +4,10 @@ import {
   CHeader,
   CToggler,
   CHeaderBrand,
-  CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
-  CSubheader,
-  CBreadcrumbRouter,
-  CLink
+  CHeaderNav
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
-// routes config
-import routes from '../routes'
 
 import { 
   TheHeaderDropdown,
@@ -54,15 +47,7 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        {/* <CHeaderNavItem className="px-3" >
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem  className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem> */}
+
       </CHeaderNav>
 
       <CHeaderNav className="px-3">

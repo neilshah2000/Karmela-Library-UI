@@ -59,6 +59,15 @@ function getShelves() {
         .then(response => {return response.json()})
 }
 
+function checkoutBook(bookInstanceId) {
+    let endpoint = '/catalog/api/copies/' + bookInstanceId + '/checkout/';
+    let request = {
+        method: 'POST'
+    }
+    return fetch(endpoint, request)
+        .then(response => {return response.json()})
+}
+
 
 function buildParams(endpoint, params) {
     const url = window.location.origin + endpoint;
@@ -76,5 +85,6 @@ export {
     getAuthors,
     getBook,
     updateBook,
-    getShelves
+    getShelves,
+    checkoutBook
 }

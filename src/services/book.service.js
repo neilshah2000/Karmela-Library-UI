@@ -1,4 +1,22 @@
 import Cookies from 'js-cookie';
+import store from './../store';
+
+
+// Set up interceptor on all fetch API calls
+// Increments redux spinner state when api is called
+// Decrements redux spinner state again when it is returned
+(function() {
+    const originalFetch = window.fetch;
+    window.fetch = function() {
+        store.dispatch({type: 'show-spinner'})
+        return originalFetch.apply(this, arguments)
+            .then((res) => {
+                store.dispatch({type: 'hide-spinner'})
+                return res;
+            })
+    }
+})();
+
 
 function getBooks(params) {
     let endpoint = '/catalog/api/books/';
@@ -68,6 +86,15 @@ function checkoutBook(bookInstanceId) {
         .then(response => {return response.json()})
 }
 
+function reserveBook(bookInstanceId) {
+    let endpoint = '/catalog/api/copies/' + bookInstanceId + '/reserve/';
+    let request = {
+        method: 'POST'
+    }
+    return fetch(endpoint, request)
+        .then(response => {return response.json()})
+}
+
 
 function buildParams(endpoint, params) {
     const url = window.location.origin + endpoint;
@@ -86,5 +113,6 @@ export {
     getBook,
     updateBook,
     getShelves,
-    checkoutBook
+    checkoutBook,
+    reserveBook
 }

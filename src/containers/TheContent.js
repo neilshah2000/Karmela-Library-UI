@@ -8,6 +8,8 @@ import { CContainer, CFade } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
+import Spinner from './Spinner';
+import Toast from './Toast'
   
 const loading = (
   <div className="pt-3 text-center">
@@ -19,6 +21,8 @@ const TheContent = () => {
   return (
     <main className="c-main">
       <CContainer fluid>
+        <Toast></Toast>
+        <Spinner></Spinner>
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {

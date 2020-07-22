@@ -1,7 +1,7 @@
 import { getBooks } from './book.service';
 import { useState, useEffect } from 'react';
 
-const useBookFetch = (currentPage, rowsPerPage, searchTerm, shelf) => {
+const useBookFetch = (currentPage, rowsPerPage, searchTerm, shelf, bookListUpdated) => {
     const [data, setData] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
     const [pageCount, setPageCount] = useState(1);
@@ -30,7 +30,7 @@ const useBookFetch = (currentPage, rowsPerPage, searchTerm, shelf) => {
             setTotalResults(result.count);
             setPageCount(Math.ceil(result.count / rowsPerPage))
         })();
-    }, [currentPage, rowsPerPage, searchTerm, shelf]); // Dependency array. API call will be re-triggered on any change
+    }, [currentPage, rowsPerPage, searchTerm, shelf, bookListUpdated]); // Dependency array. API call will be re-triggered on any change
 
     return [ data, totalResults, pageCount ];
 };

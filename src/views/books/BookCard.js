@@ -4,17 +4,37 @@ import {
     CCardBody,
     CCardHeader,
     CCardFooter,
-    CLink
+    CLink,
 } from '@coreui/react'
-import { checkoutBook } from './../../services/book.service';
+import { checkoutBook, reserveBook } from './../../services/book.service';
+import { useDispatch } from 'react-redux'
 
 const BookCard = (props) => {
-    
+    const dispatch = useDispatch()
+
     function checkoutClicked() {
         const bookInstanceId = props.book.copies[0].id;
         checkoutBook(bookInstanceId).then((data) => {
-            console.log(data);
+            props.updated();
+            const newState = dispatch({type: 'add-toast', toast: data})
         });
+    }
+
+    function reserveClicked() {
+        const bookInstanceId = props.book.copies[0].id;
+        reserveBook(bookInstanceId).then((data) => {
+            console.log(data);
+            props.updated();
+            const newState = dispatch({type: 'add-toast', toast: data})
+        });
+    }
+
+    function getCopiesCount() {
+        return props.book.copies.length;
+    }
+
+    function getAvailableCount() {
+        return props.book.copies.filter(copy => copy.status === 'Available').length;
     }
 
     return (
@@ -25,9 +45,17 @@ const BookCard = (props) => {
             <CCardBody>
                 {props.book.author_names}
             </CCardBody>
-            <CCardFooter>
-                Copies: {props.book.copies.length}
-                <CLink onClick={checkoutClicked}>Checkout</CLink>
+            <CCardFooter>                
+                <div className="d-flex justify-content-between">
+                    <div>
+                        <div>Copies: {getCopiesCount()}</div>
+                        <div>Available: {getAvailableCount()}</div>
+                    </div>
+                    <div>
+                        <div><CLink onClick={checkoutClicked}>Checkout</CLink></div>
+                        <div><CLink onClick={reserveClicked}>Reserve</CLink></div>
+                    </div>
+                </div> 
             </CCardFooter>
         </CCard>
     )

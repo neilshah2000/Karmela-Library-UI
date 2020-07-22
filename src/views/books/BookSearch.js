@@ -25,15 +25,21 @@ const BookSearch = () => {
     const [searchTerm, setSearchTerm] = useState(''); // search term that goes to back end
     const [inputText, setInputText] = useState(''); // text in the search input
     const [shelves, setShelves] = useState([]);
-    const [selectedShelf, setSelectedShelf] = useState(null);
+    const [selectedShelf, setSelectedShelf] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(20);
+    const [bookListUpdated, setBookListUpdated] = useState(null) // used to trigger another book search api call when user does checkout, checkin or reserve
 
     // API call to get books. Re-triggered when any of the arguments changes
-    const [books, totalResults, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, selectedShelf)
+    const [books, totalResults, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, selectedShelf, bookListUpdated)
 
     useEffect(() => {
         (async function fetchShelves(){
             getShelves().then((data) => {
+                // add blank option
+                data.push({
+                    id: false,
+                    name: ' -- select an option -- '
+                })
                 setShelves(data);
             });
         })();
@@ -52,6 +58,11 @@ const BookSearch = () => {
 
     function onSearchTextChange(e) {
         setInputText(e.target.value);
+    }
+
+    function onBookUpdated(){
+        console.log('bookupdated');
+        setBookListUpdated(Math.random());
     }
 
     return (
@@ -77,13 +88,12 @@ const BookSearch = () => {
                         <CCol sm='4'>
                             <CFormGroup row>
                                 <CCol md="3">
-                                    <CLabel htmlFor="shelfSelect" class='pt-1'>Shelf</CLabel>
+                                    <CLabel htmlFor="shelfSelect" className='pt-1'>Shelf</CLabel>
                                 </CCol>
                                 <CCol xs="12" md="9">
                                     <CSelect custom name="shelfSelect" id="shelfSelect" onChange={onShelfSelected} value={selectedShelf}>
-                                        <option disabled selected value='false'> -- select an option -- </option>
                                         {shelves.map((shelf) => {
-                                            return <option value={shelf.id}>{shelf.name}</option>
+                                            return <option value={shelf.id} key={shelf.id}>{shelf.name}</option>
                                         })}
                                     </CSelect>
                                 </CCol>
@@ -94,8 +104,8 @@ const BookSearch = () => {
                     <CRow>
                         
                         {books.map((book) => {
-                            return <CCol xs="12" sm="6" md="4">
-                                <BookCard book={book}></BookCard>
+                            return <CCol xs="12" sm="6" md="4" key={book.id} >
+                                <BookCard book={book} updated={onBookUpdated}></BookCard>
                             </CCol>
                         })}
 

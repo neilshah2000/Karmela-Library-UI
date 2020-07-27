@@ -1,68 +1,38 @@
-import Cookies from 'js-cookie';
-import store from './../store';
-
-
-// Set up interceptor on all fetch API calls
-// Increments redux spinner state when api is called
-// Decrements redux spinner state again when it is returned
-(function() {
-    const originalFetch = window.fetch;
-    window.fetch = function() {
-        store.dispatch({type: 'show-spinner'})
-        return originalFetch.apply(this, arguments)
-            .then((res) => {
-                store.dispatch({type: 'hide-spinner'})
-                return res;
-            })
-    }
-})();
+import { buildParams } from './helpers'
+import axios from 'axios';
 
 
 function getBooks(params) {
     let endpoint = '/catalog/api/books/';
     endpoint = buildParams(endpoint, params);
-    return fetch(endpoint)
-        .then(response => {return response.json()})
+    return axios.get(endpoint)
+        .then(response => {return response.data})
 }
 
 function getBook(bookId) {
     let endpoint = '/catalog/api/books/' + bookId;
-    return fetch(endpoint)
-        .then(response => {return response.json()})
+    return axios.get(endpoint)
+        .then(response => {return response.data})
 }
 
 function createBook(book) {
-    let endpoint = '/catalog/api/books/';
-    let request = {
-        method: 'POST',
-        body: JSON.stringify(book),
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFTOKEN': Cookies.get('csrftoken')
-        }
-    }
-    return fetch(endpoint, request)
-        .then(response => {return response.json()})
+    const endpoint = '/catalog/api/books/';
+    const body = JSON.stringify(book);
+    return axios.post(endpoint, body)
+        .then(response => {return response.data})
 }
 
 function updateBook(book) {
     let endpoint = '/catalog/api/books/' + book.id + '/';
-    let request = {
-        method: 'PUT',
-        body: JSON.stringify(book),
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFTOKEN': Cookies.get('csrftoken')
-        }
-    }
-    return fetch(endpoint, request)
-        .then(response => {return response.json()})
+    const body = JSON.stringify(book);
+    return axios.put(endpoint, body)
+        .then(response => {return response.data})
 }
 
 function getAuthors() {
     let endpoint = '/catalog/api/authors/';
-    return fetch(endpoint)
-        .then(response => {return response.json()})
+    return axios.get(endpoint)
+        .then(response => {return response.data})
         .then((result) => result.map((author) => { // add the fields needed for the select component
             author.value = author.id;
             author.key = author.id;
@@ -73,37 +43,20 @@ function getAuthors() {
 
 function getShelves() {
     let endpoint = '/catalog/api/shelves/';
-    return fetch(endpoint)
-        .then(response => {return response.json()})
+    return axios.get(endpoint)
+        .then(response => {return response.data})
 }
 
 function checkoutBook(bookInstanceId) {
     let endpoint = '/catalog/api/copies/' + bookInstanceId + '/checkout/';
-    let request = {
-        method: 'POST'
-    }
-    return fetch(endpoint, request)
-        .then(response => {return response.json()})
+    return axios.post(endpoint)
+        .then(response => {return response.data})
 }
 
 function reserveBook(bookInstanceId) {
     let endpoint = '/catalog/api/copies/' + bookInstanceId + '/reserve/';
-    let request = {
-        method: 'POST'
-    }
-    return fetch(endpoint, request)
-        .then(response => {return response.json()})
-}
-
-
-function buildParams(endpoint, params) {
-    const url = window.location.origin + endpoint;
-    console.log(url);
-    let builtUrl = new URL(url);
-    Object.keys(params).forEach((key) => {
-        builtUrl.searchParams.append(key, params[key])
-    });
-    return builtUrl;
+    return axios.post(endpoint)
+        .then(response => {return response.data})
 }
 
 export {

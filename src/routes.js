@@ -39,12 +39,14 @@ import React from 'react';
 // const User = React.lazy(() => import('./views/users/User'));
 const BookSearch = React.lazy(() => import('./views/books/BookSearch'));
 const BookEditCreate = React.lazy(() => import('./views/books/BookEditCreate'));
+const Login = React.lazy(() => import('./views/pages/login/Login'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/bookSearch', name: 'Book Search', component: BookSearch },
   { path: '/book', name: 'Book Create', component: BookEditCreate },
   { path: '/bookEdit/:id', exact: true, name: 'Book Detail', component: BookEditCreate },
+  { path: '/login', exact: true, name: 'login', component: Login },
 //   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 //   { path: '/theme', name: 'Theme', component: Colors, exact: true },
 //   { path: '/theme/colors', name: 'Colors', component: Colors },

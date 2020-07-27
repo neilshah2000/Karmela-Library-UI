@@ -18,7 +18,7 @@ import CIcon from '@coreui/icons-react'
 import { useBookFetch } from './../../services/useBookFetch';
 import { getShelves } from './../../services/book.service'
 import BookCard from './BookCard';
-
+import { logUserOut } from './../../services/auth.service';
 
 const BookSearch = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -110,7 +110,7 @@ const BookSearch = () => {
                         })}
 
                     </CRow>
-
+                    <CButton onClick={logUserOut}>logout</CButton>
                     <CPagination
                         activePage={currentPage}
                         pages={pageCount}

@@ -2,11 +2,14 @@ import { createStore } from 'redux'
 
 const initialState = {
     sidebarShow: 'responsive',
-    toasts: [], // https://stackoverflow.com/questions/35411423/how-to-dispatch-a-redux-action-with-a-timeout
-    spinner: 0
+    toasts: [],
+    spinner: 0,
+    auth_token: null,
+    loggedIn: false,
+    user: null
 }
 
-const changeState = (state = initialState, { type, toast, spinner, ...rest }) => {
+const changeState = (state = initialState, { type, toast, spinner, auth_token, loggedIn, user, ...rest }) => {
     switch (type) {
         case 'set':
             return {...state, ...rest }
@@ -24,6 +27,21 @@ const changeState = (state = initialState, { type, toast, spinner, ...rest }) =>
             return {
                 ...state,
                 spinner: state.spinner - 1
+            }
+        case 'store-token':
+            return {
+                ...state,
+                auth_token
+            }
+        case 'loggedIn':
+            return {
+                ...state,
+                loggedIn
+            }
+        case 'update-user':
+            return {
+                ...state,
+                user
             }
         default:
             return state

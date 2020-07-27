@@ -5,11 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
 import { icons } from './assets/icons'
-
 import { Provider } from 'react-redux'
 import store from './store'
+import configureAxios from './services/axios.config';
+
+configureAxios();
 
 React.icons = icons
 

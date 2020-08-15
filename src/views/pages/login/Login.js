@@ -77,7 +77,7 @@ const Login = () => {
                             <CButton color="primary" className="px-4" type='submit'>Login</CButton>
                         </CCol>
                         <CCol xs="6" className="text-right">
-                            <CButton color="link" className="px-0">Forgot password?</CButton>
+                            <CButton color="link" className="px-0"><Link to="/passwordForgot">Forgot password?</Link></CButton>
                         </CCol>
                         </CRow>
                     </CForm>

@@ -12,6 +12,9 @@ function addAuthToken() {
     if (token) {
         console.log('auth token added ' + token)
         axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+    } else {
+        console.log('auth token removed')
+        delete axios.defaults.headers.common["Authorization"];
     }
 }
 

@@ -4,9 +4,9 @@ import axios from 'axios';
 import store from '../store';
 
 
-function login(username, password) {
+function login(email, password) {
     let endpoint = '/auth/token/login/';
-    let credentials = {username, password}
+    let credentials = {email, password}
     // endpoint = buildParams(endpoint, credentials);
     let request = {
         method: 'POST',
@@ -23,9 +23,24 @@ function login(username, password) {
 }
 
 function logout() {
-    const endpoint = '/auth/token/logout'
+    const endpoint = '/auth/token/logout/'
     return axios.post(endpoint)
         .then(processLogout);
+}
+
+function register(email, password) {
+    const endpoint = '/auth/users/'
+    return axios.post(endpoint, {email, password})
+}
+
+function activate(uid, token) {
+    const endpoint = '/auth/users/activation/'
+    return axios.post(endpoint, {uid, token})
+}
+
+function passwordForgot(email) {
+    const endpoint = '/auth/users/reset_password/'
+    return axios.post(endpoint, {email})
 }
 
 function getUserDetails() {
@@ -58,5 +73,8 @@ function processUser(res) {
 export {
     login,
     logout,
+    register,
+    activate,
+    passwordForgot,
     getUserDetails
 }

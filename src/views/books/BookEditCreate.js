@@ -87,93 +87,85 @@ const BookEditCreate = (props) => {
     }
 
     return (
-        
         <>
         <CRow>
             <CCol>
-                <CCard>
-                    <CCardHeader>
-                    Create Book
-                    </CCardHeader>
-
-                    <CCardBody>
-                        <CFormGroup>
-                            <CLabel htmlFor="title">Authors</CLabel>
-                            <Select
-                                components={{ MenuList: AuthorList }}
-                                onChange={onAuthorSelectChange}
-                                value={selectedAuthors}
-                                options={authors}
-                                isMulti={true}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="title">Title</CLabel>
-                            <CInput id="title" placeholder="Book title" onChange={onFormInputChange} value={bookFields.title || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="titleShort">Short Title</CLabel>
-                            <CInput id="titleShort" placeholder="Short title" onChange={onFormInputChange} value={bookFields.titleShort || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="isbn">ISBN</CLabel>
-                            <CInput id="isbn" placeholder="978-1-86197-876-9" onChange={onFormInputChange} value={bookFields.isbn || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="callNumber">Call Number</CLabel>
-                            <CInput id="callNumber" placeholder="" onChange={onFormInputChange} value={bookFields.callNumber || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="language">Language</CLabel>
-                            <CInput id="language" placeholder="es" onChange={onFormInputChange} value={bookFields.language || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="pages">Pages</CLabel>
-                            <CInput id="pages" placeholder="" onChange={onFormInputChange} value={bookFields.pages || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="publisher">Publisher</CLabel>
-                            <CInput id="publisher" placeholder="" onChange={onFormInputChange} value={bookFields.publisher || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="publisherPlace">Publisher Place</CLabel>
-                            <CInput id="publisherPlace" placeholder="" onChange={onFormInputChange} value={bookFields.publisherPlace || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="issued">Issued</CLabel>
-                            <CInput id="issued" placeholder="" onChange={onFormInputChange} value={bookFields.issued || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="collectionTitle">Collection Title</CLabel>
-                            <CInput id="collectionTitle" placeholder="" onChange={onFormInputChange} value={bookFields.collectionTitle || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="place">Place</CLabel>
-                            <CInput id="place" placeholder="" onChange={onFormInputChange} value={bookFields.place || ''}/>
-                        </CFormGroup>
-                        <CFormGroup>
-                            <CLabel htmlFor="abstract">Abstract</CLabel>
-                            <CTextarea 
-                                name="abstract" 
-                                id="abstract" 
-                                rows="10"
-                                placeholder="Content..." onChange={onFormInputChange} value={bookFields.abstract || ''}/>
-                        </CFormGroup>
-                    </CCardBody>
-
-                    <CCardFooter>
-                        <span className='mr-2'>
-                            <CButton type="submit" size="sm" color="primary"  onClick={bookSubmitClicked}>
-                                <CIcon name="cil-scrubber"/> Submit
-                            </CButton>
-                        </span>
-                        <CButton type="reset" size="sm" color="danger" onClick={test}>
-                            <CIcon name="cil-ban"/> Reset
-                        </CButton>
-                    </CCardFooter>
-                </CCard>
+                <h2 className='mb-4'>Create Book</h2>
+                <CFormGroup>
+                    <CLabel htmlFor="title">Authors</CLabel>
+                    <Select
+                        components={{ MenuList: AuthorList }}
+                        onChange={onAuthorSelectChange}
+                        value={selectedAuthors}
+                        options={authors}
+                        isMulti={true}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="title">Title</CLabel>
+                    <CInput id="title" placeholder="Book title" onChange={onFormInputChange} value={bookFields.title || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="titleShort">Short Title</CLabel>
+                    <CInput id="titleShort" placeholder="Short title" onChange={onFormInputChange} value={bookFields.titleShort || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="isbn">ISBN</CLabel>
+                    <CInput id="isbn" placeholder="978-1-86197-876-9" onChange={onFormInputChange} value={bookFields.isbn || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="callNumber">Call Number</CLabel>
+                    <CInput id="callNumber" placeholder="" onChange={onFormInputChange} value={bookFields.callNumber || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="language">Language</CLabel>
+                    <CInput id="language" placeholder="es" onChange={onFormInputChange} value={bookFields.language || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="pages">Pages</CLabel>
+                    <CInput id="pages" placeholder="" onChange={onFormInputChange} value={bookFields.pages || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="publisher">Publisher</CLabel>
+                    <CInput id="publisher" placeholder="" onChange={onFormInputChange} value={bookFields.publisher || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="publisherPlace">Publisher Place</CLabel>
+                    <CInput id="publisherPlace" placeholder="" onChange={onFormInputChange} value={bookFields.publisherPlace || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="issued">Issued</CLabel>
+                    <CInput id="issued" placeholder="" onChange={onFormInputChange} value={bookFields.issued || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="collectionTitle">Collection Title</CLabel>
+                    <CInput id="collectionTitle" placeholder="" onChange={onFormInputChange} value={bookFields.collectionTitle || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="place">Place</CLabel>
+                    <CInput id="place" placeholder="" onChange={onFormInputChange} value={bookFields.place || ''}/>
+                </CFormGroup>
+                <CFormGroup>
+                    <CLabel htmlFor="abstract">Abstract</CLabel>
+                    <CTextarea 
+                        name="abstract" 
+                        id="abstract" 
+                        rows="10"
+                        placeholder="Content..." onChange={onFormInputChange} value={bookFields.abstract || ''}/>
+                </CFormGroup>
             </CCol>
         </CRow>
-        
+        <CRow>
+            <CCol>
+                <span className='mr-2'>
+                    <CButton type="submit" size="sm" color="primary"  onClick={bookSubmitClicked}>
+                        <CIcon name="cil-scrubber"/> Submit
+                    </CButton>
+                </span>
+                <CButton type="reset" size="sm" color="danger" onClick={test}>
+                    <CIcon name="cil-ban"/> Reset
+                </CButton>
+            </CCol>
+        </CRow>
         </>
     )
 }

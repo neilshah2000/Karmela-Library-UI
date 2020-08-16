@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
     CButton,
@@ -12,7 +12,8 @@ import {
     CInputGroup,
     CInputGroupPrepend,
     CInputGroupText,
-    CRow
+    CRow,
+    CCardFooter
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { login } from './../../../services/login.service';
@@ -20,9 +21,16 @@ import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 
 const Login = () => {
+    const [loginFailed, setLoginFailed] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const loggedIn = useSelector(state => state.loggedIn)
+    useEffect(() => {
+        login('test', 'test').then(() => {}, (err) => {
+            return console.log
+        })
+    }, [])
+
 
     if (loggedIn) {
         return <Redirect to='/bookSearch'/>
@@ -40,7 +48,7 @@ const Login = () => {
         login(username, password).then((suc) => {
             console.log(suc)
         }, (fail) => {
-            console.error(fail)
+            setLoginFailed(true)
         })
     }
 
@@ -53,7 +61,7 @@ const Login = () => {
                 <CCardGroup>
                 <CCard className="p-4">
                     <CCardBody>
-                    <CForm onSubmit={loginClicked}>
+                    <CForm >
                         <h1>Login</h1>
                         <p className="text-muted">Sign In to your account</p>
                         <CInputGroup className="mb-3">
@@ -74,7 +82,7 @@ const Login = () => {
                         </CInputGroup>
                         <CRow>
                         <CCol xs="6">
-                            <CButton color="primary" className="px-4" type='submit'>Login</CButton>
+                            <CButton onClick={loginClicked} color="primary" className="px-4" type='submit'>Login</CButton>
                         </CCol>
                         <CCol xs="6" className="text-right">
                             <CButton color="link" className="px-0"><Link to="/passwordForgot">Forgot password?</Link></CButton>
@@ -82,6 +90,9 @@ const Login = () => {
                         </CRow>
                     </CForm>
                     </CCardBody>
+                    {loginFailed && <CCardFooter>
+                        Login Failed
+                    </CCardFooter>}
                 </CCard>
                 <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                     <CCardBody className="text-center">

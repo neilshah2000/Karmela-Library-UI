@@ -66,61 +66,52 @@ const BookSearch = () => {
     }
 
     return (
-        
-        <>
         <CRow>
             <CCol>
-            <CCard>
-                <CCardHeader>
-                    Book Search
-                </CCardHeader>
-                <CCardBody>
-                    <CRow>
-                        <CCol sm='4'>
-                            <CInputGroup className={'mb-4'}>
-                                <CInputGroupPrepend>
-                                    <CButton onClick={searchButtonClicked} type="button" color="primary"><CIcon name="cil-magnifying-glass" /> Search</CButton>
-                                </CInputGroupPrepend>
-                                <CInput placeholder="Title or abstract" onChange={onSearchTextChange} value={inputText}/>
-                            </CInputGroup>
-                        </CCol>
-                        <CCol sm='4'></CCol>
-                        <CCol sm='4'>
-                            <CFormGroup row>
-                                <CCol md="3">
-                                    <CLabel htmlFor="shelfSelect" className='pt-1'>Shelf</CLabel>
-                                </CCol>
-                                <CCol xs="12" md="9">
-                                    <CSelect custom name="shelfSelect" id="shelfSelect" onChange={onShelfSelected} value={selectedShelf}>
-                                        {shelves.map((shelf) => {
-                                            return <option value={shelf.id} key={shelf.id}>{shelf.name}</option>
-                                        })}
-                                    </CSelect>
-                                </CCol>
-                            </CFormGroup>
-                        </CCol>
-                    </CRow>
-
-                    <CRow>
-                        
-                        {books.map((book) => {
-                            return <CCol xs="12" sm="6" md="4" key={book.id} >
-                                <BookCard book={book} updated={onBookUpdated}></BookCard>
+            <h2 className='mb-4'>Book Search</h2>
+                <CRow>
+                    <CCol sm='4'>
+                        <CInputGroup className={'mb-4'}>
+                            <CInputGroupPrepend>
+                                <CButton onClick={searchButtonClicked} type="button" color="primary"><CIcon name="cil-magnifying-glass" /> Search</CButton>
+                            </CInputGroupPrepend>
+                            <CInput placeholder="Title or abstract" onChange={onSearchTextChange} value={inputText}/>
+                        </CInputGroup>
+                    </CCol>
+                    <CCol sm='4'></CCol>
+                    <CCol sm='4'>
+                        <CFormGroup row>
+                            <CCol md="3">
+                                <CLabel htmlFor="shelfSelect" className='pt-1'>Shelf</CLabel>
                             </CCol>
-                        })}
+                            <CCol xs="12" md="9">
+                                <CSelect custom name="shelfSelect" id="shelfSelect" onChange={onShelfSelected} value={selectedShelf}>
+                                    {shelves.map((shelf) => {
+                                        return <option value={shelf.id} key={shelf.id}>{shelf.name}</option>
+                                    })}
+                                </CSelect>
+                            </CCol>
+                        </CFormGroup>
+                    </CCol>
+                </CRow>
 
-                    </CRow>
-                    <CButton onClick={logUserOut}>logout</CButton>
-                    <CPagination
-                        activePage={currentPage}
-                        pages={pageCount}
-                        onActivePageChange={setCurrentPage} />
-                    <span>{totalResults + ' results'}</span>
-                </CCardBody>
-            </CCard>
+                <CRow>
+                    
+                    {books.map((book) => {
+                        return <CCol xs="12" sm="6" md="4" key={book.id} >
+                            <BookCard book={book} updated={onBookUpdated}></BookCard>
+                        </CCol>
+                    })}
+
+                </CRow>
+                <CButton onClick={logUserOut}>logout</CButton>
+                <CPagination
+                    activePage={currentPage}
+                    pages={pageCount}
+                    onActivePageChange={setCurrentPage} />
+                <span>{totalResults + ' results'}</span>
             </CCol>
         </CRow>
-        </>
     )
 }
 

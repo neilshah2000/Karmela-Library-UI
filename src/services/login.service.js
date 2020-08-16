@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { setAuthTokens, addUser, isLoggenIn, logUserOut } from './auth.service';
+import { setAuthTokens, clearAuthToken, addUser, isLoggenIn, logUserOut } from './auth.service';
 import axios from 'axios';
 import store from '../store';
 
@@ -7,17 +7,18 @@ import store from '../store';
 function login(email, password) {
     let endpoint = '/auth/token/login/';
     let credentials = {email, password}
-    // endpoint = buildParams(endpoint, credentials);
     let request = {
         method: 'POST',
         body: JSON.stringify(credentials),
         headers: {
-            'Content-Type': 'application/json',
-            // 'X-CSRFTOKEN': Cookies.get('csrftoken')
+            'Content-Type': 'application/json'
         }
     }
-    return fetch(endpoint, request)
-        .then(processLogin)
+    return axios.post(endpoint, credentials)
+        .then(processLogin, (err) => {
+            console.error(err)
+            return Promise.reject(err)
+        })
         .then(getUserDetails)
         
 }
@@ -46,18 +47,14 @@ function passwordForgot(email) {
 function getUserDetails() {
     let endpoint = '/auth/users/me/';
     return axios(endpoint)
-        .then(processUser);
+        .then(processUser, () => {
+            clearAuthToken()
+        });
 }
 
 // return a promise when login is finished processing + axios headers set
 function processLogin(res) {
-    console.log(res);
-    if (res.status !== 200) {
-        // invalid credentials
-        return false
-    } else {
-        return setAuthTokens(res.json());
-    }
+    return setAuthTokens(res.data);
 }
 
 function processLogout(res) {

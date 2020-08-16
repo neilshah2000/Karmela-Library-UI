@@ -4,21 +4,24 @@ import configureAxios from './axios.config';
 export {
     setAuthTokens,
     getAuthToken,
+    clearAuthToken,    
     addUser,
     isLoggedIn,
-    logUserOut
+    logUserOut    
 }
 
-function setAuthTokens(jsonPromise) {
-    return jsonPromise.then(json => {
-        console.log(json.auth_token)
-        setLoggedIn(true);
-        storeAuthTokens(json.auth_token);
-    });
+function setAuthTokens(json) {
+    setLoggedIn(true);
+    storeAuthTokens(json.auth_token);
+    return true
 }
 
 function getAuthToken() {
     return localStorage.getItem('AUTH_TOKEN');
+}
+
+function clearAuthToken() {
+    return localStorage.removeItem('AUTH_TOKEN');
 }
 
 // has a token
@@ -39,6 +42,7 @@ function logUserOut() {
     localStorage.removeItem('AUTH_TOKEN');
     store.dispatch({type: 'loggedIn', loggedIn: false})
     store.dispatch({type: 'update-user', user: null})
+    configureAxios();
 }
 
 //////// private ///////

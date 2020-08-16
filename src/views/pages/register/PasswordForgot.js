@@ -26,7 +26,9 @@ const PasswordForgot = ({match}) => {
     }
 
     function onSendEmailClicked() {
-        passwordForgot(email).then(console.log, console.error)
+        passwordForgot(email).then(() => {
+            setSuccess(true)
+        }, console.error)
     }
     
     return (
@@ -50,6 +52,9 @@ const PasswordForgot = ({match}) => {
                                 <CButton onClick={onSendEmailClicked} color="success" block>Send Reset Email</CButton>
                             </CForm>
                         </CCardBody>
+                        {success && <CCardFooter>
+                            Email sent
+                        </CCardFooter>}
                     </CCard>
                 </CCol>
             </CRow>

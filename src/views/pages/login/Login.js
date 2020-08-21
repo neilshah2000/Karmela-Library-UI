@@ -25,12 +25,6 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const loggedIn = useSelector(state => state.loggedIn)
-    useEffect(() => {
-        login('test', 'test').then(() => {}, (err) => {
-            return console.log
-        })
-    }, [])
-
 
     if (loggedIn) {
         return <Redirect to='/bookSearch'/>
@@ -44,7 +38,8 @@ const Login = () => {
         setPassword(e.target.value);
     }
 
-    function loginClicked() {
+    function loginClicked(e) {
+        e.preventDefault()
         login(username, password).then((suc) => {
             console.log(suc)
         }, (fail) => {

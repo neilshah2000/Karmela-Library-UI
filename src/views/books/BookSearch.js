@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
-    CCard,
-    CCardBody,
-    CCardHeader,
     CCol,
     CRow,
     CPagination,
@@ -15,56 +12,11 @@ import {
     CSelect
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { useBookFetch } from './../../services/useBookFetch';
-import { getShelves } from './../../services/book.service'
 import BookCard from './BookCard';
-import { logUserOut } from './../../services/auth.service';
 
-const BookSearch = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState(''); // search term that goes to back end
-    const [inputText, setInputText] = useState(''); // text in the search input
-    const [shelves, setShelves] = useState([]);
-    const [selectedShelf, setSelectedShelf] = useState(false);
-    const [rowsPerPage, setRowsPerPage] = useState(20);
-    const [bookListUpdated, setBookListUpdated] = useState(null) // used to trigger another book search api call when user does checkout, checkin or reserve
-
-    // API call to get books. Re-triggered when any of the arguments changes
-    const [books, totalResults, pageCount] = useBookFetch(currentPage, rowsPerPage, searchTerm, selectedShelf, bookListUpdated)
-
-    useEffect(() => {
-        (async function fetchShelves(){
-            getShelves().then((data) => {
-                // add blank option
-                data.push({
-                    id: false,
-                    name: ' -- select an option -- '
-                })
-                setShelves(data);
-            });
-        })();
-    }, []);
-
-
-    function searchButtonClicked() {
-        setSelectedShelf(false)
-        setSearchTerm(inputText);
-    }
-
-    function onShelfSelected(e) {
-        setInputText('');
-        setSelectedShelf(parseInt(e.target.value))
-    }
-
-    function onSearchTextChange(e) {
-        setInputText(e.target.value);
-    }
-
-    function onBookUpdated(){
-        console.log('bookupdated');
-        setBookListUpdated(Math.random());
-    }
-
+const BookSearch = ({ searchButtonClicked, onSearchTextChange, inputText, onShelfSelected, selectedShelf, shelves,
+    books, onBookUpdated, currentPage, pageCount, setCurrentPage, totalResults}) => {
+        
     return (
         <CRow>
             <CCol>
@@ -104,7 +56,7 @@ const BookSearch = () => {
                     })}
 
                 </CRow>
-                <CButton onClick={logUserOut}>logout</CButton>
+
                 <CPagination
                     activePage={currentPage}
                     pages={pageCount}

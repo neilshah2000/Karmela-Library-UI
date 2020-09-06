@@ -8,7 +8,7 @@ import {
 import { useSelector } from 'react-redux'
 
 const Toast = (props) => {
-    const toasts = useSelector(state => state.toasts)
+    const toasts = useSelector(state => state.toasts.all)
     console.log(toasts)
 
     return (

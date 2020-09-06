@@ -5,7 +5,7 @@ import {
   Switch
 } from 'react-router-dom'
 import { CContainer, CFade } from '@coreui/react'
-import BookSearch from './../views/books/BookSearch';
+import BookSearchContainer from './BookSearch.container'
 import BookEditCreate from './../views/books/BookEditCreate'
 
 // routes config
@@ -28,7 +28,7 @@ const TheContent = () => {
         <Spinner></Spinner>
         <Suspense fallback={loading}>
           <Switch>
-            <PrivateRoute exact path="/bookSearch" name="Book Search" component={BookSearch} />
+            <PrivateRoute exact path="/bookSearch" name="Book Search" component={BookSearchContainer} />
             <PrivateRoute exact path="/book" name="Book Create" component={BookEditCreate} />
             <PrivateRoute exact path="/bookEdit/:id" name="Book Detail" component={BookEditCreate} />
             <Redirect from="/" to="/bookSearch" />

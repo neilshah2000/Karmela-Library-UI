@@ -16,15 +16,16 @@ import {
     CCardFooter
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { login } from './../../../services/login.service';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom';
+import { login } from './../../../state/login.actions'
 
 const Login = () => {
     const [loginFailed, setLoginFailed] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const loggedIn = useSelector(state => state.loggedIn)
+    const loggedIn = useSelector(state => state.login.loggedIn)
+    const dispatch = useDispatch()
 
     if (loggedIn) {
         return <Redirect to='/bookSearch'/>
@@ -40,11 +41,7 @@ const Login = () => {
 
     function loginClicked(e) {
         e.preventDefault()
-        login(username, password).then((suc) => {
-            console.log(suc)
-        }, (fail) => {
-            setLoginFailed(true)
-        })
+        dispatch(login(username, password))
     }
 
 

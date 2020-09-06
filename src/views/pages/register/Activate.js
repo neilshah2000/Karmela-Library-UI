@@ -1,33 +1,24 @@
 import React, {useState, useEffect} from 'react'
 import {
-  CButton,
   CCard,
   CCardHeader,
   CCardBody,
   CCardFooter,
   CCol,
   CContainer,
-  CForm,
-  CInput,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
   CRow
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { activate } from './../../../services/login.service';
+import { useDispatch, useSelector} from 'react-redux'
+import { userActivate } from './../../../state/user.actions'
 
 const Activate = ({match}) => {
-    const [success, setSuccess] = useState(false)
+    const message = useSelector(state => state.user.message)
+    const dispatch = useDispatch()
     useEffect(() => {
         const uid = match.params.uid
         const token = match.params.token
-        activate(uid, token).then((res) => {
-            if (res.status === 204) {
-                setSuccess(true)
-            }
-        }, console.error)
-    }, [])
+        dispatch(userActivate(uid, token))
+    }, [dispatch])
     
     return (
         <div className="c-app c-default-layout flex-row align-items-center">
@@ -37,7 +28,7 @@ const Activate = ({match}) => {
                     <CCard className="mx-4">
                         <CCardHeader><h1>Activate</h1></CCardHeader>
                         <CCardBody className="p-4">
-                            { success ? <div>Thank you, your account has been activated</div> : <div>Sorry, activation failed</div>}
+                            { message }
                         </CCardBody>
                         <CCardFooter className="p-4">
 

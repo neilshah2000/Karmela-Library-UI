@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   CButton,
   CCard,
@@ -15,13 +16,15 @@ import {
   CFooter
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { register } from './../../../services/login.service';
+import { userRegister, userUpdateMessage} from './../../../state/user.actions'
+
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
-    const [message, setMessage] = useState('')
+    const message = useSelector(state => state.user.message)
+    const dispatch = useDispatch()
 
     function onEmailChange(e) {
         setEmail(e.target.value);
@@ -37,17 +40,9 @@ const Register = () => {
 
     const registerClicked = () => {
         if(password === retypePassword) {
-            register(email, password).then((res) => {
-                if (res.status === 201) {
-                    setMessage('Account created. Please check your email to activate account')
-                } else {
-                    setMessage(JSON.stringify(res)) 
-                }
-            }, (err) => {
-                setMessage(JSON.stringify(err.response.data))
-            })
+            dispatch(userRegister(email, password))
         } else {
-            setMessage('Passwords must match')
+            dispatch(userUpdateMessage('Passwords must match'))
         }
     }
     

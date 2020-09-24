@@ -1,4 +1,4 @@
-import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE,
+import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, 
     bookUpdateSome } from './book.actions'
 import { apiRequest } from './api.action'
 
@@ -42,8 +42,28 @@ export const bookGetSomeProcessor = (store) => next => action => {
     }
 }
 
+export const bookCheckoutSideEffect = (store) => next => action => {
+    next(action)
+    if (action.type === BOOK_CHECKOUT) {
+        // const url = '/catalog/api/copies/' + action.payload[0].id + '/checkoutBulk/';
+        const url = '/catalog/api/copies/checkoutBulk/';
+        store.dispatch(apiRequest(
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify(action.payload)
+            },
+            BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE)
+        )
+    }
+}
+
 
 export const bookMiddleware = [
     bookGetSomeSideEffect,
     bookGetSomeProcessor,
+    bookCheckoutSideEffect
 ]

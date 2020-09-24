@@ -4,7 +4,9 @@ import {
   CHeader,
   CToggler,
   CHeaderBrand,
-  CHeaderNav
+  CHeaderNav,
+  CBadge,
+  CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
@@ -19,7 +21,8 @@ import {
 const TheHeader = () => {
     const dispatch = useDispatch()
     const sidebarShow = useSelector(state => state.sidebarShow)
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user.me)
+    const basketCount = useSelector(state => state.books.basket.length)
 
     const toggleSidebar = () => {
         const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
@@ -47,12 +50,19 @@ const TheHeader = () => {
                 <CIcon name="logo" height="48" alt="Logo"/>
             </CHeaderBrand>
 
+            {/* CSS in this section pushes email and basket icon bellow to the right */}
             <CHeaderNav className="d-md-down-none mr-auto">
-
             </CHeaderNav>
 
             {user && user.email && 
                 <CHeaderNav className="mr-5">{user.email}</CHeaderNav>}
+
+            <CHeaderNav className="mr-5">
+                <CLink to='/basket'>
+                    <CIcon name="cil-basket"/>
+                    <CBadge shape="pill" color="danger">{basketCount}</CBadge>
+                </CLink>
+            </CHeaderNav>
             
         </CHeader>
     )

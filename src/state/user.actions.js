@@ -15,6 +15,10 @@ export const USER_FORGOT_PASSWORD = '[User] forgot password'
 export const USER_FORGOT_PASSWORD_SUCCESS = '[User] forgot password success'
 export const USER_FORGOT_PASSWORD_FAILURE = '[User] forgot password failure'
 
+export const USER_RESET_PASSWORD = '[User] reset password'
+export const USER_RESET_PASSWORD_SUCCESS = '[User] forgot reset success'
+export const USER_RESET_PASSWORD_FAILURE = '[User] forgot reset failure'
+
 export const USER_UPDATE_MESSAGE = '[User] update message'
 
 //////// users defined actions
@@ -41,6 +45,20 @@ export const userActivate = (uid, token) => ({
     payload: {
         uid,
         token
+    }
+});
+
+export const userForgotPassword = (email) => ({
+    type: USER_FORGOT_PASSWORD,
+    payload: email
+});
+
+export const userResetPassword = (uid, token, password) => ({
+    type: USER_RESET_PASSWORD,
+    payload: {
+        uid,
+        token,
+        password
     }
 });
 

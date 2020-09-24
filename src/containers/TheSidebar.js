@@ -56,6 +56,8 @@ const TheSidebar = () => {
         <CSidebarNav>
             <CSidebarNavItem name='Search' to='/bookSearch' icon='cil-search'></CSidebarNavItem>
             <CSidebarNavItem name='Book' to='/book' icon='cil-book'></CSidebarNavItem>
+            <CSidebarNavItem name='Basket' to='/basket' icon='cil-basket'></CSidebarNavItem>
+            <CSidebarNavItem name='My Borrowed' to='/myBorrowed' icon='cil-basket'></CSidebarNavItem>
             <CSidebarNavItem name='Logout' onClick={logoutClicked} icon='cil-account-logout'></CSidebarNavItem>
             {/* <CCreateElement
             items={navigation}

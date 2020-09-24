@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   CButton,
   CCard,
@@ -15,20 +16,19 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { passwordForgot } from './../../../services/login.service';
+import { userForgotPassword } from './../../../state/user.actions'
 
-const PasswordForgot = ({match}) => {
-    const [success, setSuccess] = useState(false)
+const PasswordForgot = () => {
     const [email, setEmail] = useState('')
+    const message = useSelector(state => state.user.message)
+    const dispatch = useDispatch()
 
     function onEmailChange(e) {
         setEmail(e.target.value);
     }
 
     function onSendEmailClicked() {
-        passwordForgot(email).then(() => {
-            setSuccess(true)
-        }, console.error)
+        dispatch(userForgotPassword(email))
     }
     
     return (
@@ -52,8 +52,8 @@ const PasswordForgot = ({match}) => {
                                 <CButton onClick={onSendEmailClicked} color="success" block>Send Reset Email</CButton>
                             </CForm>
                         </CCardBody>
-                        {success && <CCardFooter>
-                            Email sent
+                        {message && <CCardFooter>
+                            {message}
                         </CCardFooter>}
                     </CCard>
                 </CCol>

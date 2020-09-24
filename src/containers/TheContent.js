@@ -7,9 +7,8 @@ import {
 import { CContainer, CFade } from '@coreui/react'
 import BookSearchContainer from './BookSearch.container'
 import BookEditCreate from './../views/books/BookEditCreate'
-
-// routes config
-// import routes from '../routes'
+import Basket from './../views/basket/Basket'
+import MyBorrowed from './../views/books/MyBorrowed'
 import Spinner from './Spinner';
 import Toast from './Toast';
 import PrivateRoute from './../views/books/PrivateRoute';
@@ -31,6 +30,8 @@ const TheContent = () => {
             <PrivateRoute exact path="/bookSearch" name="Book Search" component={BookSearchContainer} />
             <PrivateRoute exact path="/book" name="Book Create" component={BookEditCreate} />
             <PrivateRoute exact path="/bookEdit/:id" name="Book Detail" component={BookEditCreate} />
+            <PrivateRoute exact path="/basket" name="Basket" component={Basket} />
+            <PrivateRoute exact path="/myBorrowed" name="My Borrowed" component={MyBorrowed} />
             <Redirect from="/" to="/bookSearch" />
           </Switch>
         </Suspense>

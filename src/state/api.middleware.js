@@ -10,8 +10,12 @@ export const api = ({dispatch, getState}) => next => action => {
         const loggedIn = getState().login.loggedIn
         if (loggedIn) {
             const token = getState().login.authToken
-            config.headers = {
-                Authorization: 'Token ' + token
+            if (config.headers) {
+                config.headers.Authorization = 'Token ' + token
+            } else {
+                config.headers = {
+                    Authorization: 'Token ' + token
+                }
             }
         }
 

@@ -6,27 +6,32 @@ import {
     CCardFooter,
     CLink,
 } from '@coreui/react'
-import { checkoutBook, reserveBook } from './../../services/book.service';
+// import { checkoutBook, reserveBook } from './../../services/book.service';
+import { bookAddToBasket } from './../../state/book.actions'
 import { useDispatch } from 'react-redux'
 
 const BookCard = (props) => {
     const dispatch = useDispatch()
 
-    function checkoutClicked() {
-        const bookInstanceId = props.book.copies[0].id;
-        checkoutBook(bookInstanceId).then((data) => {
-            props.updated();
-            const newState = dispatch({type: 'add-toast', toast: data})
-        });
-    }
+    // function checkoutClicked() {
+    //     const bookInstanceId = props.book.copies[0].id;
+    //     checkoutBook(bookInstanceId).then((data) => {
+    //         props.updated();
+    //         const newState = dispatch({type: 'add-toast', toast: data})
+    //     });
+    // }
 
-    function reserveClicked() {
-        const bookInstanceId = props.book.copies[0].id;
-        reserveBook(bookInstanceId).then((data) => {
-            console.log(data);
-            props.updated();
-            const newState = dispatch({type: 'add-toast', toast: data})
-        });
+    // function reserveClicked() {
+    //     const bookInstanceId = props.book.copies[0].id;
+    //     reserveBook(bookInstanceId).then((data) => {
+    //         console.log(data);
+    //         props.updated();
+    //         const newState = dispatch({type: 'add-toast', toast: data})
+    //     });
+    // }
+
+    function addToBasketClicked() {
+        dispatch(bookAddToBasket(props.book))
     }
 
     function getCopiesCount() {
@@ -52,8 +57,9 @@ const BookCard = (props) => {
                         <div>Available: {getAvailableCount()}</div>
                     </div>
                     <div>
-                        <div><CLink onClick={checkoutClicked}>Checkout</CLink></div>
-                        <div><CLink onClick={reserveClicked}>Reserve</CLink></div>
+                        {/* <div><CLink onClick={checkoutClicked}>Checkout</CLink></div>
+                        <div><CLink onClick={reserveClicked}>Reserve</CLink></div> */}
+                        <div><CLink onClick={addToBasketClicked}>Add to Basket</CLink></div>
                     </div>
                 </div> 
             </CCardFooter>

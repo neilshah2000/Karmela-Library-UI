@@ -3,6 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import { getUserDetails } from './services/login.service';
 import { getAuthToken } from './services/auth.service';
+import PasswordReset from './views/pages/register/PasswordReset'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -39,6 +40,7 @@ class App extends Component {
                 <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
                 <Route path="/activate/:uid/:token" name="Activation Page" render={props => <Activate {...props}/>} />
                 <Route exact path="/passwordForgot" name="Password Forgot" render={props => <PasswordForgot {...props}/>} />
+                <Route exact path="/password/reset/confirm/:uid/:token" name="Password Reset" render={props => <PasswordReset {...props}/>} />
                 <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
                 <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
                 <Route path="/" name="Home" render={props => <TheLayout {...props}/>} />

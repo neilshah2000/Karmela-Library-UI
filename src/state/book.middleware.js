@@ -1,5 +1,6 @@
-import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, 
-    bookUpdateSome } from './book.actions'
+import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, BOOK_GET_BORROWED, 
+    BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, 
+    bookUpdateSome, bookUpdateBorrowed } from './book.actions'
 import { apiRequest } from './api.action'
 
 export const bookGetSomeSideEffect = (store) => next => action => {
@@ -45,7 +46,6 @@ export const bookGetSomeProcessor = (store) => next => action => {
 export const bookCheckoutSideEffect = (store) => next => action => {
     next(action)
     if (action.type === BOOK_CHECKOUT) {
-        // const url = '/catalog/api/copies/' + action.payload[0].id + '/checkoutBulk/';
         const url = '/catalog/api/copies/checkoutBulk/';
         store.dispatch(apiRequest(
             url,
@@ -62,8 +62,44 @@ export const bookCheckoutSideEffect = (store) => next => action => {
 }
 
 
+export const bookCheckoutProcessor = (store) => next => action => {
+    next(action)
+    if (action.type === BOOK_CHECKOUT_SUCCESS) {
+        // TODO dispatch clear basket
+    }
+}
+
+export const bookGetBorrowedSideEffect = (store) => next => action => {
+    next(action)
+    if (action.type === BOOK_GET_BORROWED) {
+        const url = '/catalog/api/copies/currentLoans/';
+        store.dispatch(apiRequest(
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE)
+        )
+    }
+}
+
+export const bookGetBorrowedProcessor = ({dispatch}) => next => action => {
+    next(action)
+    if (action.type === BOOK_GET_BORROWED_SUCCESS) {
+        dispatch(bookUpdateBorrowed(action.payload))
+    }
+    if (action.type === BOOK_GET_BORROWED_FAILURE) {
+    }
+}
+
+
 export const bookMiddleware = [
     bookGetSomeSideEffect,
     bookGetSomeProcessor,
-    bookCheckoutSideEffect
+    bookCheckoutSideEffect,
+    bookCheckoutProcessor,
+    bookGetBorrowedProcessor,
+    bookGetBorrowedSideEffect
 ]

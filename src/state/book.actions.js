@@ -12,6 +12,7 @@ export const BOOK_CHECKOUT_FAILURE = '[Book] checkout failure'
 export const BOOK_GET_BORROWED = '[Book] get borrowed'
 export const BOOK_GET_BORROWED_SUCCESS = '[Book] get borrowed success'
 export const BOOK_GET_BORROWED_FAILURE = '[Book] get borrowed failure'
+export const BOOK_UPDATE_BORROWED = '[Book] update borrowed'
 
 ///// user defined actions
 
@@ -40,10 +41,19 @@ export const bookCheckout = (bookInstances) => ({
     payload: bookInstances
 });
 
+export const bookGetBorrowed = () => ({
+    type: BOOK_GET_BORROWED
+});
+
 
 ///// system actions
 
 export const bookUpdateSome = (books) => ({
     type: BOOK_UPDATE_SOME,
     payload: books
+});
+
+export const bookUpdateBorrowed = (borrowedBooks) => ({
+    type: BOOK_UPDATE_BORROWED,
+    payload: borrowedBooks
 });

@@ -1,4 +1,4 @@
-import { BOOK_UPDATE_SOME, BOOK_ADD_TO_BASKET, BOOK_REMOVE_FROM_BASKET, BOOK_UPDATE_BORROWED } from './book.actions'
+import { BOOK_UPDATE_SOME, BOOK_ADD_TO_BASKET, BOOK_REMOVE_FROM_BASKET, BOOK_UPDATE_BORROWED, BOOK_CLEAR_BASKET, BOOK_SET_SHOW_MODAL } from './book.actions'
 
 const initBook = {
     searchResults: {
@@ -6,7 +6,8 @@ const initBook = {
         count: 0
     },
     basket: [],
-    borrowed: []
+    borrowed: [],
+    showBasketModal: false
 }
 
 export function bookReducer(state = initBook, action) {
@@ -24,8 +25,12 @@ export function bookReducer(state = initBook, action) {
         case BOOK_REMOVE_FROM_BASKET:
             const removeBookId = action.payload.id
             return {...state, basket: state.basket.filter(book => book.id !== removeBookId)}
+        case BOOK_CLEAR_BASKET:
+            return {...state, basket: []}
         case BOOK_UPDATE_BORROWED:
             return {...state, borrowed: action.payload}
+        case BOOK_SET_SHOW_MODAL:
+            return {...state, showBasketModal: action.payload}
         default:
             return state
     }

@@ -1,6 +1,6 @@
 import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, BOOK_GET_BORROWED, 
     BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, 
-    bookUpdateSome, bookUpdateBorrowed } from './book.actions'
+    bookUpdateSome, bookUpdateBorrowed, bookClearBasket, bookSetShowModal } from './book.actions'
 import { apiRequest } from './api.action'
 
 export const bookGetSomeSideEffect = (store) => next => action => {
@@ -62,10 +62,11 @@ export const bookCheckoutSideEffect = (store) => next => action => {
 }
 
 
-export const bookCheckoutProcessor = (store) => next => action => {
+export const bookCheckoutProcessor = ({ dispatch }) => next => action => {
     next(action)
     if (action.type === BOOK_CHECKOUT_SUCCESS) {
-        // TODO dispatch clear basket
+        dispatch(bookClearBasket())
+        dispatch(bookSetShowModal(false))
     }
 }
 

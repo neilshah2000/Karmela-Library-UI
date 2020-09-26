@@ -10,12 +10,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import BasketItem from './BasketItem'
-import { bookRemoveFromBasket, bookCheckout } from './../../state/book.actions'
+import { bookRemoveFromBasket, bookCheckout, bookSetShowModal } from './../../state/book.actions'
 import CheckoutModal from './CheckoutModal'
 
 
 const Basket = () => {
-    const [showModal, setShowModal] = useState(false)
+    const showModal = useSelector(state => state.books.showBasketModal)
     const dispatch = useDispatch()
     const basketItems = useSelector(state => state.books.basket)
 
@@ -25,7 +25,11 @@ const Basket = () => {
     }
 
     const onClose = () => {
-        setShowModal(false)
+        dispatch(bookSetShowModal(false))
+    }
+
+    const onCheckoutClicked = () => {
+        dispatch(bookSetShowModal(true))
     }
 
     const onConfirmCheckout = () => {
@@ -50,7 +54,7 @@ const Basket = () => {
             <CCol>
                 <div className='d-flex justify-content-between mb-2'>
                     <div className='mb-4'>Basket</div>
-                    <CButton onClick={() => setShowModal(true)} type="button" color="primary" disabled={basketItems.length === 0}>Checkout</CButton>
+                    <CButton onClick={onCheckoutClicked} type="button" color="primary" disabled={basketItems.length === 0}>Checkout</CButton>
                 </div>
                 <CRow>
                     

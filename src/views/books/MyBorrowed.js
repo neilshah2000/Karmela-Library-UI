@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { bookGetBorrowed } from './../../state/book.actions'
+import { bookGetBorrowed, bookReturn } from './../../state/book.actions'
 import BorrowedBookCard from './BorrowedBookCard'
 import {
     CCol,
@@ -17,7 +17,7 @@ const MyBorrowed =  () => {
     console.log(myBorrowedBooks)
 
     const onBookReturned = (returnedBook) => {
-        console.log(returnedBook)
+        dispatch(bookReturn(returnedBook))
     }
 
     return (

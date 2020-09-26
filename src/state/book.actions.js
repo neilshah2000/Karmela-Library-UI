@@ -18,6 +18,10 @@ export const BOOK_UPDATE_BORROWED = '[Book] update borrowed'
 
 export const BOOK_SET_SHOW_MODAL = '[Book] set show modal'
 
+export const BOOK_RETURN = '[Book] return'
+export const BOOK_RETURN_SUCCESS = '[Book] return success'
+export const BOOK_RETURN_FAILURE = '[Book] return failure'
+
 ///// user defined actions
 
 export const bookGetSome = (currentPage, rowsPerPage, searchTerm, shelf) => ({
@@ -56,6 +60,11 @@ export const bookGetBorrowed = () => ({
 export const bookSetShowModal = (showModal) => ({
     type: BOOK_SET_SHOW_MODAL,
     payload: showModal
+});
+
+export const bookReturn = (bookInstance) => ({
+    type: BOOK_RETURN,
+    payload: bookInstance
 });
 
 ///// system actions

@@ -1,6 +1,6 @@
 import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, BOOK_GET_BORROWED, 
-    BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, 
-    bookUpdateSome, bookUpdateBorrowed, bookClearBasket, bookSetShowModal } from './book.actions'
+    BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, BOOK_RETURN, BOOK_RETURN_SUCCESS, BOOK_RETURN_FAILURE, 
+    bookUpdateSome, bookUpdateBorrowed, bookClearBasket, bookSetShowModal, bookGetBorrowed } from './book.actions'
 import { apiRequest } from './api.action'
 
 export const bookGetSomeSideEffect = (store) => next => action => {
@@ -96,11 +96,40 @@ export const bookGetBorrowedProcessor = ({dispatch}) => next => action => {
 }
 
 
+export const bookReturnSideEffect = (store) => next => action => {
+    next(action)
+    if (action.type === BOOK_RETURN) {
+        const url = '/catalog/api/copies/' + action.payload.id + '/returnBook/';
+        store.dispatch(apiRequest(
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+            },
+            BOOK_RETURN_SUCCESS, BOOK_RETURN_FAILURE)
+        )
+    }
+}
+
+export const bookReturnProcessor = ({dispatch}) => next => action => {
+    next(action)
+    if (action.type === BOOK_RETURN_SUCCESS) {
+        dispatch(bookGetBorrowed())
+    }
+    if (action.type === BOOK_RETURN_FAILURE) {
+    }
+}
+
+
 export const bookMiddleware = [
     bookGetSomeSideEffect,
     bookGetSomeProcessor,
     bookCheckoutSideEffect,
     bookCheckoutProcessor,
     bookGetBorrowedProcessor,
-    bookGetBorrowedSideEffect
+    bookGetBorrowedSideEffect,
+    bookReturnSideEffect,
+    bookReturnProcessor
 ]

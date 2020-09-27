@@ -6,6 +6,7 @@ import {
     CToastBody
 } from '@coreui/react';
 import { useSelector } from 'react-redux'
+import { TOAST_TYPE_ERROR } from './../state/constants'
 
 const Toast = (props) => {
     const toasts = useSelector(state => state.toasts.all)
@@ -19,12 +20,13 @@ const Toast = (props) => {
                         key={'toast' + key}
                         show={true}
                         autohide={5000}
-                        fade={true}>
-                        <CToastHeader >
-                            Toast title
+                        fade={true}
+                        className={(toast.type === TOAST_TYPE_ERROR ? 'text-danger' : null)}>
+                        <CToastHeader className={(toast.type === TOAST_TYPE_ERROR ? 'text-danger' : null)}>
+                            {toast.title}
                         </CToastHeader>
                         <CToastBody>
-                            {toast.status}
+                            {toast.message}
                         </CToastBody>
                     </CToast>
                 })}

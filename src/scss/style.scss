@@ -14,3 +14,9 @@
 .white {
     background-color: white !important;
 }
+
+.disabled-link {
+    color: gray;
+    pointer-events: none;
+    cursor: default;
+}

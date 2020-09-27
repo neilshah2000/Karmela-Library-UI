@@ -36,7 +36,10 @@ const Basket = () => {
         const bookInstances = []
         basketItems.forEach(book => {
             if (book.copies.length > 0) {
-                bookInstances.push(book.copies[0])
+                const available = book.copies.filter(copy => copy.status = 'a')
+                if (available.length > 0) {
+                    bookInstances.push(available[0])
+                }
             }
         })
         dispatch(bookCheckout(bookInstances))

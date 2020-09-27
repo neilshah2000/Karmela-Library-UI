@@ -4,6 +4,7 @@ import './scss/style.scss';
 import { getUserDetails } from './services/login.service';
 import { getAuthToken } from './services/auth.service';
 import PasswordReset from './views/pages/register/PasswordReset'
+import Toast from './containers/Toast'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -34,6 +35,7 @@ class App extends Component {
     render() {
         return (
         <HashRouter>
+            <Toast></Toast>
             <React.Suspense fallback={loading}>
                 <Switch>
                 <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />

@@ -55,7 +55,11 @@ export const usersRegisterProcessor = (store) => next => action => {
         store.dispatch(userUpdateMessage('Account created. Please check your email to activate account'))
     }
     if (action.type === USER_REGISTER_FAILURE) {
-        store.dispatch(userUpdateMessage(action.payload.message))
+        const errorArrays = Object.keys(action.payload)
+            .map(key => action.payload[key])
+        const errorList = [].concat.apply([], errorArrays);
+        const myMessage = errorList.join('\n')
+        store.dispatch(userUpdateMessage(myMessage))
     }
 }
 

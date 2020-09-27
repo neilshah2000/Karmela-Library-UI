@@ -16,14 +16,19 @@ export const processAllFailureActions = ({dispatch}) => next => action => {
     return next(action)
 };
 
-export const processAllSuccessActions = ({dispatch}) => next => action => {
-    if(action.type.includes('success')) {
-        dispatch(toastUpdateMessages(action.type, '', TOAST_TYPE_SUCCESS))
-    }
-    return next(action)
-};
+// export const processAllSuccessActions = ({dispatch}) => next => action => {
+//     if(action.type.includes('success')) {
+//         let message = ''
+//         if (typeof action.payload === 'string') {
+//             message = action.payload
+//         }
+//         dispatch(toastUpdateMessages(action.type, message, TOAST_TYPE_SUCCESS))
+//     }
+//     return next(action)
+// };
+
 
 export const toastMiddleware = [
     processAllFailureActions,
-    processAllSuccessActions
+    // processAllSuccessActions,
 ]

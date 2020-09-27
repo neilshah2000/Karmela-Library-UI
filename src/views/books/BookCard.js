@@ -39,7 +39,11 @@ const BookCard = (props) => {
     }
 
     function getAvailableCount() {
-        return props.book.copies.filter(copy => copy.status === 'Available').length;
+        return props.book.copies.filter(copy => copy.status === 'a').length;
+    }
+
+    function noCopiesAvailable() {
+        return getAvailableCount() === 0
     }
 
     return (
@@ -59,7 +63,7 @@ const BookCard = (props) => {
                     <div>
                         {/* <div><CLink onClick={checkoutClicked}>Checkout</CLink></div>
                         <div><CLink onClick={reserveClicked}>Reserve</CLink></div> */}
-                        <div><CLink onClick={addToBasketClicked}>Add to Basket</CLink></div>
+                        <div><CLink disabled={noCopiesAvailable()} className={(noCopiesAvailable() ? 'disabled-link' : null)} onClick={addToBasketClicked}>Add to Basket</CLink></div>
                     </div>
                 </div> 
             </CCardFooter>

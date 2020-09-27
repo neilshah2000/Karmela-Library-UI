@@ -10,7 +10,6 @@ import BookEditCreate from './../views/books/BookEditCreate'
 import Basket from './../views/basket/Basket'
 import MyBorrowed from './../views/books/MyBorrowed'
 import Spinner from './Spinner';
-import Toast from './Toast';
 import PrivateRoute from './../views/books/PrivateRoute';
   
 const loading = (
@@ -23,7 +22,6 @@ const TheContent = () => {
   return (
     <main className="c-main">
       <CContainer fluid>
-        <Toast></Toast>
         <Spinner></Spinner>
         <Suspense fallback={loading}>
           <Switch>

@@ -1,7 +1,10 @@
 import { BOOK_GET_SOME, BOOK_GET_SOME_SUCCESS, BOOK_GET_SOME_FAILURE, BOOK_CHECKOUT, BOOK_CHECKOUT_SUCCESS, BOOK_CHECKOUT_FAILURE, BOOK_GET_BORROWED, 
-    BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, BOOK_RETURN, BOOK_RETURN_SUCCESS, BOOK_RETURN_FAILURE, 
+    BOOK_GET_BORROWED_SUCCESS, BOOK_GET_BORROWED_FAILURE, BOOK_RETURN, BOOK_RETURN_SUCCESS, BOOK_RETURN_FAILURE, BOOK_ADD_TO_BASKET, BOOK_REMOVE_FROM_BASKET,
+    BOOK_CLEAR_BASKET, 
     bookUpdateSome, bookUpdateBorrowed, bookClearBasket, bookSetShowModal, bookGetBorrowed } from './book.actions'
 import { apiRequest } from './api.action'
+import { toastUpdateMessages } from './toast.actions'
+import { TOAST_TYPE_ERROR, TOAST_TYPE_SUCCESS } from './constants'
 
 export const bookGetSomeSideEffect = (store) => next => action => {
     next(action)
@@ -67,6 +70,10 @@ export const bookCheckoutProcessor = ({ dispatch }) => next => action => {
     if (action.type === BOOK_CHECKOUT_SUCCESS) {
         dispatch(bookClearBasket())
         dispatch(bookSetShowModal(false))
+        const borrowedTitles = action.payload.map(bookInstance => bookInstance.book.title)
+        borrowedTitles.forEach(bookTitle => {
+            dispatch(toastUpdateMessages('Checkout success. Enjoy your book', bookTitle, TOAST_TYPE_SUCCESS))
+        })
     }
 }
 
@@ -117,8 +124,20 @@ export const bookReturnProcessor = ({dispatch}) => next => action => {
     next(action)
     if (action.type === BOOK_RETURN_SUCCESS) {
         dispatch(bookGetBorrowed())
+        dispatch(toastUpdateMessages('Return success. Please place your book in the return basket', action.payload.book.title, TOAST_TYPE_SUCCESS))
     }
     if (action.type === BOOK_RETURN_FAILURE) {
+    }
+}
+
+// process all basket actions as successful as there is no api call, so all front end stuff
+export const bookBasketProcessor = ({dispatch}) => next => action => {
+    next(action)
+    if (action.type === BOOK_ADD_TO_BASKET) {
+        dispatch(toastUpdateMessages('Book Added To Basket', action.payload.title, TOAST_TYPE_SUCCESS))
+    }
+    if (action.type === BOOK_REMOVE_FROM_BASKET) {
+        dispatch(toastUpdateMessages('Book Removed Basket', action.payload.title, TOAST_TYPE_SUCCESS))
     }
 }
 
@@ -131,5 +150,6 @@ export const bookMiddleware = [
     bookGetBorrowedProcessor,
     bookGetBorrowedSideEffect,
     bookReturnSideEffect,
-    bookReturnProcessor
+    bookReturnProcessor,
+    bookBasketProcessor
 ]

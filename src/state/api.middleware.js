@@ -22,7 +22,15 @@ export const api = ({dispatch, getState}) => next => action => {
         fetch(action.payload, config)
         .then(response => {
             if(!response.ok) {
-                return Promise.reject(response.statusText)
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    return Promise.reject(response.statusText)
+                }
+                return new Promise((resolve, reject) => {
+                    response.json().then((json) => {
+                        reject(json)
+                    })
+                })
             }
             return response
         })
@@ -36,11 +44,9 @@ export const api = ({dispatch, getState}) => next => action => {
             return response.json();
         })
         .then((data) => {
-            // console.log(data)
             return dispatch({ type: onSuccess, payload: data, meta: action })
         })
         .catch(error => {
-            // console.error(error)
             return dispatch({ type: onError, payload: error, meta: action })
         })
     }

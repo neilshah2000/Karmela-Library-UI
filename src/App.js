@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
-import { getUserDetails } from './services/login.service';
-import { getAuthToken } from './services/auth.service';
+// import { getUserDetails } from './services/login.service';
+// import { getAuthToken } from './services/auth.service';
 import PasswordReset from './views/pages/register/PasswordReset'
 import Toast from './containers/Toast'
 
@@ -24,13 +24,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 
 class App extends Component {
-    componentDidMount() {
-        const token = getAuthToken();
-        // if there is an existing token, get the user and set logged in
-        if(token) {
-            getUserDetails();
-        }
-    }
+
 
     render() {
         return (

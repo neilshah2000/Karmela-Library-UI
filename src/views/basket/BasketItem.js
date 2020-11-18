@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import {
     CCard,
     CCardFooter,
@@ -7,7 +6,6 @@ import {
     CCardBody,
     CLink
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 
 const BasketItem = ({book, onRemove}) => {

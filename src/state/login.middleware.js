@@ -85,9 +85,9 @@ const logoutProcessor = ({ dispatch, getState }) => next => action => {
     next(action)
     if (action.type === LOGOUT) {
         dispatch(apiRequest(
-            '/_session',
+            '/auth/token/logout/',
             {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },

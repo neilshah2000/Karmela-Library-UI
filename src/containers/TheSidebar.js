@@ -14,8 +14,9 @@ import {
 } from '@coreui/react'
 
 import logo from './../assets/karmela.png'
-import { logout } from './../services/login.service';
+// import { logout } from './../services/login.service';
 import { useHistory } from "react-router-dom";
+import { logout } from './../state/login.actions'
 
 // sidebar nav config
 import navigation from './_nav'
@@ -26,10 +27,7 @@ const TheSidebar = () => {
     let history = useHistory();
 
     function logoutClicked(){
-        logout().then((res) => {
-            console.log(res);
-            history.push('/login');
-        }, (err) => {console.log(err)});
+        dispatch(logout())
     }
 
     return (

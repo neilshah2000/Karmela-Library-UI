@@ -11,9 +11,9 @@ import { Provider } from 'react-redux'
 // import store from './store'
 import store from './state/store'
 
-import configureAxios from './services/axios.config';
+// import configureAxios from './services/axios.config';
 
-configureAxios();
+// configureAxios();
 
 React.icons = icons
 

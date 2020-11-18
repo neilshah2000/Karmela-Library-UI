@@ -13,7 +13,6 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow,
-  CFooter
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { userRegister, userUpdateMessage} from './../../../state/user.actions'
